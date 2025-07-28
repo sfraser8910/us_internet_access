@@ -1,0 +1,5 @@
+---
+title: ""
+---
+
+Over the past several years access to internet has become much more universal across America; however, some famillies still do not have steady access to the internet. Using data from the 2021 5-year American Community Survey, I seek to determine the impact of household income and age on Americans' access to internet. 

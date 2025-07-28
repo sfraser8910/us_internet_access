@@ -1,0 +1,14 @@
+---
+title: "Model"
+format: html
+---
+
+```{r}
+library(tidyverse)
+library(tidymodels)
+library(marginaleffects)
+```
+
+```{r}
+x <- readRDS("data/x.rds")
+```
