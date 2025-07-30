@@ -1,0 +1,23 @@
+[
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "My name is Surya and I am a high school student interested in math and computer science.\nI created this project as a part of Kane’s Summer Data Science Bootcamp.\nThe github repo for this project can be accessed here"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "US Internet Access",
+    "section": "",
+    "text": "Over the past several years access to internet has become much more universal across America; however, some famillies still do not have steady access to the internet. Using data from the 2021 5-year American Community Survey, I seek to determine the impact of household income and age on Americans’ access to internet."
+  },
+  {
+    "objectID": "model.html",
+    "href": "model.html",
+    "title": "Model",
+    "section": "",
+    "text": "Linear Regression Results\n\n\nInternet Access by Age, Race, and Income\n\n\nTerm\nEstimate\nStd. Error\nt value\np-value\nCI Lower\nCI Upper\n\n\n\n\n(Intercept)\n1.092\n0\n3148.359947\n0.00e+00\n1.091\n1.093\n\n\nagep\n0.004\n0\n611.711258\n0.00e+00\n0.003\n0.004\n\n\nrac1p\n0.000\n0\n6.417363\n1.39e-10\n0.000\n0.000\n\n\nhincp\n0.000\n0\n-589.591884\n0.00e+00\n0.000\n0.000\n\n\n\n\n\n\n\n\\[\n\\text{accessinet}_i = \\beta_0 + \\beta_1 \\cdot \\text{agep}_i + \\beta_2 \\cdot \\text{rac1p}_i + \\beta_3 \\cdot \\text{hincp}_i + \\varepsilon_i\n\\]\nwhere:\n\n\\(\\text{accessinet}_i\\) is the outcome variable indicating internet access for individual \\(i\\)\n\n\\(\\text{agep}_i\\) is the age of individual \\(i\\)\n\n\\(\\text{rac1p}_i\\) is the race category of individual \\(i\\) (e.g., dummy-coded)\n\n\\(\\text{hincp}_i\\) is the household income for individual \\(i\\)\n\n\\(\\beta_0\\) is the intercept\n\n\\(\\beta_1\\), \\(\\beta_2\\), \\(\\beta_3\\) are coefficients for the predictors\n\n\\(\\varepsilon_i\\) is the error term"
+  }
+]

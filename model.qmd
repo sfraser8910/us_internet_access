@@ -1,14 +1,60 @@
 ---
 title: "Model"
 format: html
+execute: 
+  echo: false
 ---
 
 ```{r}
-library(tidyverse)
-library(tidymodels)
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(tidymodels))
 library(marginaleffects)
+library(gt)
 ```
+
+
+$$
+\text{accessinet}_i = \beta_0 + \beta_1 \cdot \text{agep}_i + \beta_2 \cdot \text{rac1p}_i + \beta_3 \cdot \text{hincp}_i + \varepsilon_i
+$$
+
+where:
+
+- $\text{accessinet}_i$ is the outcome variable indicating internet access for individual $i$  
+- $\text{agep}_i$ is the age of individual $i$  
+- $\text{rac1p}_i$ is the race category of individual $i$ (e.g., dummy-coded)  
+- $\text{hincp}_i$ is the household income for individual $i$  
+- $\beta_0$ is the intercept  
+- $\beta_1$, $\beta_2$, $\beta_3$ are coefficients for the predictors  
+- $\varepsilon_i$ is the error term
 
 ```{r}
 x <- readRDS("data/x.rds")
+```
+
+```{r}
+model<-logistic_reg()|>fit(accessinet~agep, data = x)|>tidy(conf.int=TRUE)
+
+#make table look nicer
+model |>
+  mutate(
+    estimate = round(estimate, 3),
+    std.error = round(std.error, 3),
+    conf.low = round(conf.low, 3),
+    conf.high = round(conf.high, 3),
+    p.value = signif(p.value, 3)
+  ) |>
+  gt() |>
+  tab_header(
+    title = "Linear Regression Results",
+    subtitle = "Internet Access by Age, Race, and Income"
+  ) |>
+  cols_label(
+    term = "Term",
+    estimate = "Estimate",
+    std.error = "Std. Error",
+    statistic = "t value",
+    p.value = "p-value",
+    conf.low = "CI Lower",
+    conf.high = "CI Upper"
+  )
 ```

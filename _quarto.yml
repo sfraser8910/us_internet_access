@@ -2,12 +2,14 @@ project:
   type: website
 
 website:
-  title: "US Internet Access"
+  title: "Internet Access"
   navbar:
     left:
       - href: index.qmd
         text: Home
+      - model.qmd
       - about.qmd
+      - sources.qmd
 
 format:
   html:
@@ -17,5 +19,4 @@ format:
     css: styles.css
     toc: true
 
-
-
+    
