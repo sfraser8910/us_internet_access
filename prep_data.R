@@ -2,10 +2,11 @@ library(readr)
 library(dplyr)
 library(tidyverse)
 library(janitor)
+library(dplyr)
 
-indi_cols <- c("SERIALNO", "AGEP", "RAC1P")
+indi_cols <- c("SERIALNO", "AGEP", "RAC1P", "SCHL", "ESR")
 
-house_cols <- c("SERIALNO", "HINCP", "ACCESSINET")
+house_cols <- c("SERIALNO", "HINCP", "ACCESSINET", "NOC")
 
 indi <- bind_rows(
   read_csv("psam_pusa.csv",col_select = all_of(indi_cols)),

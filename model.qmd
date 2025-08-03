@@ -9,52 +9,124 @@ execute:
 suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(tidymodels))
 library(marginaleffects)
+library(dplyr)
 library(gt)
+library(ggplot2)
+library(scales)
 ```
-
-
-$$
-\text{accessinet}_i = \beta_0 + \beta_1 \cdot \text{agep}_i + \beta_2 \cdot \text{rac1p}_i + \beta_3 \cdot \text{hincp}_i + \varepsilon_i
-$$
-
-where:
-
-- $\text{accessinet}_i$ is the outcome variable indicating internet access for individual $i$  
-- $\text{agep}_i$ is the age of individual $i$  
-- $\text{rac1p}_i$ is the race category of individual $i$ (e.g., dummy-coded)  
-- $\text{hincp}_i$ is the household income for individual $i$  
-- $\beta_0$ is the intercept  
-- $\beta_1$, $\beta_2$, $\beta_3$ are coefficients for the predictors  
-- $\varepsilon_i$ is the error term
 
 ```{r}
 x <- readRDS("data/x.rds")
+
+#clean data
+x <- x |> filter(!is.na(accessinet), !is.na(agep), !is.na(rac1p), !is.na(schl), !is.na(esr), !is.na(hincp), hincp > 0, hincp < 1e6)
+
+x<- x|>
+  mutate(accessinet_binary = case_when(
+    accessinet == 1 ~ 1,
+    accessinet %in% c(2, 3) ~ 0,
+    TRUE ~ NA_real_  
+  ))
+
+x <- x |>
+  mutate(accessinet_binary = factor(accessinet_binary, levels = c(0, 1), labels = c("LimitedOrNoAccess", "FullAccess")))
+
 ```
 
 ```{r}
-model<-logistic_reg()|>fit(accessinet~agep, data = x)|>tidy(conf.int=TRUE)
+model<-logistic_reg()|>fit(accessinet_binary~agep+hincp+agep*hincp, data=x)
+model|>tidy(conf.int=TRUE)->model_tidy
+```
 
-#make table look nicer
-model |>
+```{r}
+model_tidy |> 
   mutate(
-    estimate = round(estimate, 3),
-    std.error = round(std.error, 3),
-    conf.low = round(conf.low, 3),
-    conf.high = round(conf.high, 3),
-    p.value = signif(p.value, 3)
-  ) |>
-  gt() |>
-  tab_header(
-    title = "Linear Regression Results",
-    subtitle = "Internet Access by Age, Race, and Income"
-  ) |>
+    term = case_when(
+      term == "(Intercept)" ~ "Intercept",
+      term == "agep" ~ "Age (agep)",
+      term == "hincp" ~ "Household Income (hincp)",
+      term == "agep:hincp" ~ "Age × Income"
+    ),
+    estimate = round(estimate, 5),
+    std.error = round(std.error, 5),
+    conf.low = round(conf.low, 5),
+    conf.high = round(conf.high, 5)
+  ) |> 
+  select(term, estimate, std.error, conf.low, conf.high) |> 
+  gt() |> 
   cols_label(
     term = "Term",
     estimate = "Estimate",
     std.error = "Std. Error",
-    statistic = "t value",
-    p.value = "p-value",
-    conf.low = "CI Lower",
-    conf.high = "CI Upper"
+    conf.low = "95% CI (Low)",
+    conf.high = "95% CI (High)"
+  ) |> 
+  tab_header(
+    title = "Logistic Regression Coefficients"
   )
 ```
+
+```{r}
+# Manually create a prediction grid
+newdata <- expand.grid(
+  agep = seq(20, 80, by = 2),
+  hincp = c(20000, 50000, 80000, 110000)
+)
+
+# Predict using the parsnip model (automatically uses logit link)
+newdata$pred_prob <- predict(model, newdata, type = "prob")$.pred_FullAccess
+
+# If you want standard errors / confidence intervals,
+# use the underlying glm object
+model_glm <- model$fit
+
+# Add confidence intervals manually using predict.glm
+pred <- predict(model_glm, newdata = newdata, type = "link", se.fit = TRUE)
+newdata$fit_link <- pred$fit
+newdata$se_link <- pred$se.fit
+
+# Convert link scale to probability scale and add 95% CI
+newdata <- newdata %>%
+  mutate(
+    prob = plogis(fit_link),
+    conf.low = plogis(fit_link - 1.96 * se_link),
+    conf.high = plogis(fit_link + 1.96 * se_link),
+    hincp_label = factor(hincp,
+                         levels = c(20000, 50000, 80000, 110000),
+                         labels = c("$20k", "$50k", "$80k", "$110k"))
+  )
+
+# Plot
+ggplot(newdata, aes(x = agep, y = prob, color = hincp_label, fill = hincp_label)) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.15, color = NA) +
+  geom_line() +
+  labs(
+    title = "Predicted Probability of Full Internet Access",
+    subtitle = "By Age and Household Income",
+    x = "Age",
+    y = "Probability of Full Internet Access",
+    color = "Household Income",
+    fill = "Household Income"
+  ) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  scale_color_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette = "Dark2") +
+  theme_minimal(base_size = 16) +
+  theme(
+    legend.position = "top",
+    plot.title = element_text(face = "bold"),
+    axis.title.y = element_text(margin = margin(r = 10)),
+    axis.title.x = element_text(margin = margin(t = 10))
+  )
+
+```
+
+$$
+\log\left(\frac{P(\text{accessinet\_binary} = 1)}{1 - P(\text{accessinet\_binary} = 1)}\right)
+= \beta_0 + \beta_1 \cdot \text{agep} + \beta_2 \cdot \text{hincp} + \beta_3 \cdot (\text{agep} \times \text{hincp})
+$$
+
+$$
+\log\left(\frac{P(\text{accessinet\_binary} = 1)}{1 - P(\text{accessinet\_binary} = 1)}\right)
+= 3.04 - 0.0339 \cdot \text{agep} + 0.00000704 \cdot \text{hincp} + 0.000000130 \cdot (\text{agep} \times \text{hincp})
+$$

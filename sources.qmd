@@ -3,4 +3,5 @@ title: "Sources"
 format: html
 ---
 
+Data for this project came from the 2021 5-year ACS- both individual and household level data was used. To clean the data, "NA" values were omitted, and, for simplicty's sake, "accessinet" values of "No" and "Limited" were combined into one category.
 

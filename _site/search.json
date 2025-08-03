@@ -18,6 +18,13 @@
     "href": "model.html",
     "title": "Model",
     "section": "",
-    "text": "Linear Regression Results\n\n\nInternet Access by Age, Race, and Income\n\n\nTerm\nEstimate\nStd. Error\nt value\np-value\nCI Lower\nCI Upper\n\n\n\n\n(Intercept)\n1.092\n0\n3148.359947\n0.00e+00\n1.091\n1.093\n\n\nagep\n0.004\n0\n611.711258\n0.00e+00\n0.003\n0.004\n\n\nrac1p\n0.000\n0\n6.417363\n1.39e-10\n0.000\n0.000\n\n\nhincp\n0.000\n0\n-589.591884\n0.00e+00\n0.000\n0.000\n\n\n\n\n\n\n\n\\[\n\\text{accessinet}_i = \\beta_0 + \\beta_1 \\cdot \\text{agep}_i + \\beta_2 \\cdot \\text{rac1p}_i + \\beta_3 \\cdot \\text{hincp}_i + \\varepsilon_i\n\\]\nwhere:\n\n\\(\\text{accessinet}_i\\) is the outcome variable indicating internet access for individual \\(i\\)\n\n\\(\\text{agep}_i\\) is the age of individual \\(i\\)\n\n\\(\\text{rac1p}_i\\) is the race category of individual \\(i\\) (e.g., dummy-coded)\n\n\\(\\text{hincp}_i\\) is the household income for individual \\(i\\)\n\n\\(\\beta_0\\) is the intercept\n\n\\(\\beta_1\\), \\(\\beta_2\\), \\(\\beta_3\\) are coefficients for the predictors\n\n\\(\\varepsilon_i\\) is the error term"
+    "text": "Logistic Regression Coefficients\n\n\nTerm\nEstimate\nStd. Error\n95% CI (Low)\n95% CI (High)\n\n\n\n\nIntercept\n3.04460\n0.00560\n3.03362\n3.05559\n\n\nAge (agep)\n-0.03395\n0.00009\n-0.03412\n-0.03377\n\n\nHousehold Income (hincp)\n0.00001\n0.00000\n0.00001\n0.00001\n\n\nAge × Income\n0.00000\n0.00000\n0.00000\n0.00000\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\\[\n\\log\\left(\\frac{P(\\text{accessinet\\_binary} = 1)}{1 - P(\\text{accessinet\\_binary} = 1)}\\right)\n= \\beta_0 + \\beta_1 \\cdot \\text{agep} + \\beta_2 \\cdot \\text{hincp} + \\beta_3 \\cdot (\\text{agep} \\times \\text{hincp})\n\\]\n\\[\n\\log\\left(\\frac{P(\\text{accessinet\\_binary} = 1)}{1 - P(\\text{accessinet\\_binary} = 1)}\\right)\n= 3.04 - 0.0339 \\cdot \\text{agep} + 0.00000704 \\cdot \\text{hincp} + 0.000000130 \\cdot (\\text{agep} \\times \\text{hincp})\n\\]"
+  },
+  {
+    "objectID": "sources.html",
+    "href": "sources.html",
+    "title": "Sources",
+    "section": "",
+    "text": "Data for this project came from the 2021 5-year ACS- both individual and household level data was used. To clean the data, “NA” values were omitted, and, for simplicty’s sake, “accessinet” values of “No” and “Limited” were combined into one category."
   }
 ]
