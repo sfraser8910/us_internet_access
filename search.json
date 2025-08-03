@@ -9,15 +9,22 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "US Internet Access",
+    "title": "Internet Access",
     "section": "",
-    "text": "Over the past several years access to internet has become much more universal across America; however, some famillies still do not have steady access to the internet. Using data from the 2021 5-year American Community Survey, I seek to determine the impact of household income and age on Americans’ access to internet."
+    "text": "Over the past several years access to internet has become much more universal across America; however, some famillies still do not have steady access to the internet. Using data from the 2021 5-year American Community Survey, I seek to determine the impact of household income and age on Americans’ access to internet. I modeled internet access (a binary variable) using logistic regression. While incrases in income were associated with increased log-odds of internet access, increases in age were assocciated with decreased log-odds of internet access. Holding income constant, for every one year increase in age the log-odds of full internet access decreases by roughly 3% and the effect of income on internet access increases with age."
   },
   {
     "objectID": "model.html",
     "href": "model.html",
-    "title": "Model",
+    "title": "Internet Access",
     "section": "",
-    "text": "library(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.4     ✔ readr     2.1.5\n✔ forcats   1.0.0     ✔ stringr   1.5.1\n✔ ggplot2   3.5.2     ✔ tibble    3.3.0\n✔ lubridate 1.9.4     ✔ tidyr     1.3.1\n✔ purrr     1.1.0     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\nlibrary(tidymodels)\n\n── Attaching packages ────────────────────────────────────── tidymodels 1.3.0 ──\n✔ broom        1.0.8     ✔ rsample      1.3.0\n✔ dials        1.4.0     ✔ tune         1.3.0\n✔ infer        1.0.9     ✔ workflows    1.2.0\n✔ modeldata    1.4.0     ✔ workflowsets 1.1.1\n✔ parsnip      1.3.2     ✔ yardstick    1.3.2\n✔ recipes      1.3.1     \n── Conflicts ───────────────────────────────────────── tidymodels_conflicts() ──\n✖ scales::discard() masks purrr::discard()\n✖ dplyr::filter()   masks stats::filter()\n✖ recipes::fixed()  masks stringr::fixed()\n✖ dplyr::lag()      masks stats::lag()\n✖ yardstick::spec() masks readr::spec()\n✖ recipes::step()   masks stats::step()\n\nlibrary(marginaleffects)\n\n\nx &lt;- readRDS(\"data/x.rds\")"
+    "text": "Logistic Regression Coefficients\n\n\nTerm\nEstimate\nStd. Error\n95% CI (Low)\n95% CI (High)\n\n\n\n\nIntercept\n3.04460405\n0.00560414\n3.03362136\n3.05558916\n\n\nAge (agep)\n-0.03394737\n0.00009060\n-0.03412496\n-0.03376980\n\n\nHousehold Income (hincp)\n0.00000704\n0.00000007\n0.00000689\n0.00000719\n\n\nAge × Income\n0.00000013\n0.00000000\n0.00000013\n0.00000013\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\\[\n\\log\\left(\\frac{P(\\text{accessinet\\_binary} = 1)}{1 - P(\\text{accessinet\\_binary} = 1)}\\right)\n= \\beta_0 + \\beta_1 \\cdot \\text{agep} + \\beta_2 \\cdot \\text{hincp} + \\beta_3 \\cdot (\\text{agep} \\times \\text{hincp})\n\\]\n\\[\n\\log\\left(\\frac{P(\\text{accessinet\\_binary} = 1)}{1 - P(\\text{accessinet\\_binary} = 1)}\\right)\n= 3.04 - 0.0339 \\cdot \\text{agep} + 0.00000704 \\cdot \\text{hincp} + 0.000000130 \\cdot (\\text{agep} \\times \\text{hincp})\n\\]"
+  },
+  {
+    "objectID": "sources.html",
+    "href": "sources.html",
+    "title": "Sources",
+    "section": "",
+    "text": "Data for this project came from the 2021 5-year ACS- both individual and household level data was used. To clean the data, “NA” values were omitted, and, for simplicty’s sake, “accessinet” values of “No” and “Limited” were combined into one category."
   }
 ]
