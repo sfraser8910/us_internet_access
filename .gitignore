@@ -1,1 +1,24 @@
+# Quarto
 /.quarto/
+/_site/
+/.quarto_render_lock
+
+# R and RStudio
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+
+# Intermediate files
+*.rmarkdown
+*.knit.md
+*_cache/
+*_files/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# GitHub Pages
+docs/

@@ -1,5 +1,5 @@
 ---
-title: "Model"
+title: ""
 format: html
 execute: 
   echo: false
@@ -30,7 +30,6 @@ x<- x|>
 
 x <- x |>
   mutate(accessinet_binary = factor(accessinet_binary, levels = c(0, 1), labels = c("LimitedOrNoAccess", "FullAccess")))
-
 ```
 
 ```{r}
@@ -39,6 +38,7 @@ model|>tidy(conf.int=TRUE)->model_tidy
 ```
 
 ```{r}
+#turns model_tidy tibble into a more presentable table
 model_tidy |> 
   mutate(
     term = case_when(
@@ -47,10 +47,10 @@ model_tidy |>
       term == "hincp" ~ "Household Income (hincp)",
       term == "agep:hincp" ~ "Age × Income"
     ),
-    estimate = round(estimate, 5),
-    std.error = round(std.error, 5),
-    conf.low = round(conf.low, 5),
-    conf.high = round(conf.high, 5)
+    estimate = round(estimate, 8),
+    std.error = round(std.error, 8),
+    conf.low = round(conf.low, 8),
+    conf.high = round(conf.high, 8)
   ) |> 
   select(term, estimate, std.error, conf.low, conf.high) |> 
   gt() |> 
@@ -67,25 +67,22 @@ model_tidy |>
 ```
 
 ```{r}
-# Manually create a prediction grid
+#plots results 
 newdata <- expand.grid(
   agep = seq(20, 80, by = 2),
   hincp = c(20000, 50000, 80000, 110000)
 )
 
-# Predict using the parsnip model (automatically uses logit link)
 newdata$pred_prob <- predict(model, newdata, type = "prob")$.pred_FullAccess
 
-# If you want standard errors / confidence intervals,
-# use the underlying glm object
 model_glm <- model$fit
 
-# Add confidence intervals manually using predict.glm
+
 pred <- predict(model_glm, newdata = newdata, type = "link", se.fit = TRUE)
 newdata$fit_link <- pred$fit
 newdata$se_link <- pred$se.fit
 
-# Convert link scale to probability scale and add 95% CI
+
 newdata <- newdata %>%
   mutate(
     prob = plogis(fit_link),
@@ -96,7 +93,7 @@ newdata <- newdata %>%
                          labels = c("$20k", "$50k", "$80k", "$110k"))
   )
 
-# Plot
+
 ggplot(newdata, aes(x = agep, y = prob, color = hincp_label, fill = hincp_label)) +
   geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.15, color = NA) +
   geom_line() +
@@ -118,7 +115,6 @@ ggplot(newdata, aes(x = agep, y = prob, color = hincp_label, fill = hincp_label)
     axis.title.y = element_text(margin = margin(r = 10)),
     axis.title.x = element_text(margin = margin(t = 10))
   )
-
 ```
 
 $$

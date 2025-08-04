@@ -1,5 +1,92 @@
 ---
 title: ""
+format: html
+execute: 
+  echo: false
 ---
 
-Over the past several years access to internet has become much more universal across America; however, some famillies still do not have steady access to the internet. Using data from the 2021 5-year American Community Survey, I seek to determine the impact of household income and age on Americans' access to internet. 
+```{r}
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(tidymodels))
+library(marginaleffects)
+library(dplyr)
+library(gt)
+library(ggplot2)
+library(scales)
+```
+
+
+```{r}
+x <- readRDS("data/x.rds")
+
+#clean data
+x <- x |> filter(!is.na(accessinet), !is.na(agep), !is.na(rac1p), !is.na(schl), !is.na(esr), !is.na(hincp), hincp > 0, hincp < 1e6)
+
+x<- x|>
+  mutate(accessinet_binary = case_when(
+    accessinet == 1 ~ 1,
+    accessinet %in% c(2, 3) ~ 0,
+    TRUE ~ NA_real_  
+  ))
+
+x <- x |>
+  mutate(accessinet_binary = factor(accessinet_binary, levels = c(0, 1), labels = c("LimitedOrNoAccess", "FullAccess")))
+```
+
+```{r}
+model<-logistic_reg()|>fit(accessinet_binary~agep+hincp+agep*hincp, data=x)
+model|>tidy(conf.int=TRUE)->model_tidy
+```
+
+```{r}
+#plots results 
+newdata <- expand.grid(
+  agep = seq(20, 80, by = 2),
+  hincp = c(20000, 50000, 80000, 110000)
+)
+
+newdata$pred_prob <- predict(model, newdata, type = "prob")$.pred_FullAccess
+
+model_glm <- model$fit
+
+
+pred <- predict(model_glm, newdata = newdata, type = "link", se.fit = TRUE)
+newdata$fit_link <- pred$fit
+newdata$se_link <- pred$se.fit
+
+
+newdata <- newdata %>%
+  mutate(
+    prob = plogis(fit_link),
+    conf.low = plogis(fit_link - 1.96 * se_link),
+    conf.high = plogis(fit_link + 1.96 * se_link),
+    hincp_label = factor(hincp,
+                         levels = c(20000, 50000, 80000, 110000),
+                         labels = c("$20k", "$50k", "$80k", "$110k"))
+  )
+
+
+ggplot(newdata, aes(x = agep, y = prob, color = hincp_label, fill = hincp_label)) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.15, color = NA) +
+  geom_line() +
+  labs(
+    title = "Predicted Probability of Full Internet Access",
+    subtitle = "By Age and Household Income",
+    x = "Age",
+    y = "Probability of Full Internet Access",
+    color = "Household Income",
+    fill = "Household Income"
+  ) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  scale_color_brewer(palette = "Dark2") +
+  scale_fill_brewer(palette = "Dark2") +
+  theme_minimal(base_size = 16) +
+  theme(
+    legend.position = "top",
+    plot.title = element_text(face = "bold"),
+    axis.title.y = element_text(margin = margin(r = 10)),
+    axis.title.x = element_text(margin = margin(t = 10))
+  )
+```
+
+Over the past several years access to internet has become much more universal across America; however, some famillies still do not have steady access to the internet. Using data from the 2021 5-year American Community Survey, I seek to determine the impact of household income and age on Americans' access to internet. I modeled internet access (a binary variable) using logistic regression. While incrases in income were associated with increased log-odds of internet access, increases in age were assocciated with decreased log-odds of internet access. Holding income constant, for every one year increase in age the log-odds of full internet access decreases by roughly 3% and the effect of income on internet access increases with age.

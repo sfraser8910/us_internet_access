@@ -1,0 +1,17 @@
+{
+  "hash": "d4969e6fed3aa90644d3389d0c5ba1d7",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"\"\nformat: html\nexecute: \n  echo: false\n---\n\n\n::: {.cell}\n\n:::\n\n\n\n\n::: {.cell}\n\n:::\n\n\n\n::: {.cell}\n\n:::\n\n\n\n::: {.cell}\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-4-1.png){width=672}\n:::\n:::\n\n\nOver the past several years access to internet has become much more universal across America; however, some famillies still do not have steady access to the internet. Using data from the 2021 5-year American Community Survey, I seek to determine the impact of household income and age on Americans' access to internet. I modeled internet access (a binary variable) using logistic regression. While incrases in income were associated with increased log-odds of internet access, increases in age were assocciated with decreased log-odds of internet access. Holding income constant, for every one year increase in age the log-odds of full internet access decreases by roughly 3% and the effect of income on internet access increases with age.\n",
+    "supporting": [
+      "index_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

@@ -1,15 +1,19 @@
 project:
   type: website
-
+  output-dir: _site
+  
 website:
   title: "Internet Access"
   navbar:
     left:
       - href: index.qmd
         text: Home
-      - model.qmd
-      - about.qmd
-      - sources.qmd
+      - href: model.qmd
+        text: Model
+      - href: about.qmd
+        text: About
+      - href: sources.qmd
+        text: Sources
 
 format:
   html:
@@ -18,5 +22,15 @@ format:
       - brand
     css: styles.css
     toc: true
+    keep-md: false
+    
+execute:
+  freeze: auto
+  cache: false
+  keep-md: false
+
+knitr:
+  opts_chunk:
+    echo: false
 
     
