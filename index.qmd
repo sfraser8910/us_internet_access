@@ -13,6 +13,7 @@ library(dplyr)
 library(gt)
 library(ggplot2)
 library(scales)
+library(stringr)
 ```
 
 
@@ -70,10 +71,10 @@ ggplot(newdata, aes(x = agep, y = prob, color = hincp_label, fill = hincp_label)
   geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.15, color = NA) +
   geom_line() +
   labs(
-    title = "Predicted Probability of Full Internet Access",
-    subtitle = "By Age and Household Income",
-    x = "Age",
+    title = "Predicted Probability of Full Internet Access\nby Age and Household Income",
+    subtitle = "Higher income and younger people are more likely to have full internet access.\nThe effect of income on access increases with age.",
     y = "Probability of Full Internet Access",
+    x="Age"
     color = "Household Income",
     fill = "Household Income"
   ) +
@@ -89,4 +90,5 @@ ggplot(newdata, aes(x = agep, y = prob, color = hincp_label, fill = hincp_label)
   )
 ```
 
-Over the past several years access to internet has become much more universal across America; however, some famillies still do not have steady access to the internet. Using data from the 2021 5-year American Community Survey, I seek to determine the impact of household income and age on Americans' access to internet. I modeled internet access (a binary variable) using logistic regression. While incrases in income were associated with increased log-odds of internet access, increases in age were assocciated with decreased log-odds of internet access. Holding income constant, for every one year increase in age the log-odds of full internet access decreases by roughly 3% and the effect of income on internet access increases with age.
+Over the past several years access to the internet has become much more universal across America; however, some families still do not have steady access to the internet. Using data from the 2021 5-year American Community Survey, I seek to determine the impact of household income and age on Americans' access to the internet. I modeled internet access (a binary variable) using logistic regression. While increases in income were associated with increased log-odds of internet access, increases in age were associated with decreased log-odds of internet access. Holding income constant, for every one year increase in age, the log-odds of full internet access decreases by roughly 3%, and the effect of income on internet access increases with age.
+

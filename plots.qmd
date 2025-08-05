@@ -1,0 +1,59 @@
+---
+title: ""
+format: html
+execute: 
+  echo: false
+---
+
+```{r}
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(tidymodels))
+library(marginaleffects)
+library(dplyr)
+library(gt)
+library(ggplot2)
+library(scales)
+library(patchwork)
+library(stringr)
+```
+
+These plots highlight the individual impacts of age and household income on Americans' access to internet: people with full access to internet are typically younger and wealthier than those without it. 
+
+
+
+
+
+
+```{r}
+x <- readRDS("data/x.rds")
+
+#clean data
+x <- x |> filter(!is.na(accessinet), !is.na(agep), !is.na(rac1p), !is.na(schl), !is.na(esr), !is.na(hincp), hincp > 0, hincp < 1e6)
+
+x<- x|>
+  mutate(accessinet_binary = case_when(
+    accessinet == 1 ~ 1,
+    accessinet %in% c(2, 3) ~ 0,
+    TRUE ~ NA_real_  
+  ))
+
+x <- x |>
+  mutate(accessinet_binary = factor(accessinet_binary, levels = c(0, 1), labels = c("LimitedOrNoAccess", "FullAccess")))
+```
+
+```{r}
+x|> ggplot(aes(y=agep, x=accessinet_binary))+geom_boxplot()+labs(title="Internet Access in US According to Age", subtitle="The median age of Americans with limited or no internet access was significantly higher than\nthat of Americans with full internet access.", x="Type of Internet Access", y="Age")+scale_x_discrete(labels = c("No/Limited Access", "Full Access"))+theme_minimal(base_size = 16) +
+theme(legend.position = "top", plot.title = element_text(face = "bold"), axis.title.y = element_text(margin = margin(r = 10)), axis.title.x = element_text(margin = margin(t = 10)))
+```
+
+
+
+
+
+```{r}
+avg_inc_by_int <- x |>
+  group_by(accessinet_binary) |>
+  summarize(hincp = mean(hincp, na.rm = TRUE)) |>
+  ungroup()
+avg_inc_by_int|> ggplot(aes(x=accessinet_binary,y=hincp))+geom_col()+labs(title="Average Household Income According to Internet Access", subtitle="The average household income of Americans with full internet\naccess was much greater than that of Americans with limited or no internet access.", x="Type of Internet Access", y="Household Income")+scale_x_discrete(labels = c("No/Limited Access", "Full Access"))+theme_minimal(base_size = 16) + theme(legend.position = "top", plot.title = element_text(face = "bold"), axis.title.y = element_text(margin = margin(r = 10)), axis.title.x = element_text(margin = margin(t = 10)))
+```

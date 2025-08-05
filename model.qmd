@@ -13,6 +13,8 @@ library(dplyr)
 library(gt)
 library(ggplot2)
 library(scales)
+library(patchwork)
+library(stringr)
 ```
 
 ```{r}
@@ -62,60 +64,17 @@ model_tidy |>
     conf.high = "95% CI (High)"
   ) |> 
   tab_header(
-    title = "Logistic Regression Coefficients"
+    title = "Model Results"
   )
 ```
 
-```{r}
-#plots results 
-newdata <- expand.grid(
-  agep = seq(20, 80, by = 2),
-  hincp = c(20000, 50000, 80000, 110000)
-)
-
-newdata$pred_prob <- predict(model, newdata, type = "prob")$.pred_FullAccess
-
-model_glm <- model$fit
 
 
-pred <- predict(model_glm, newdata = newdata, type = "link", se.fit = TRUE)
-newdata$fit_link <- pred$fit
-newdata$se_link <- pred$se.fit
+
+This table highlights key results from the model. It is important to note that the Intercept value should be disregarded as this indicates the log odds of  someone for whom both the predictors (age and household income) equal zero having full internet access. Considering that none of the confidence intervals include 0, these predictions appear reasonable. Most notably these estimates indicate that an increase one year in age decreases the log-odds of full internet access by roughly 3% and a one dollar increase in household income leads to a small increase in the log odds of full internet access.  
 
 
-newdata <- newdata %>%
-  mutate(
-    prob = plogis(fit_link),
-    conf.low = plogis(fit_link - 1.96 * se_link),
-    conf.high = plogis(fit_link + 1.96 * se_link),
-    hincp_label = factor(hincp,
-                         levels = c(20000, 50000, 80000, 110000),
-                         labels = c("$20k", "$50k", "$80k", "$110k"))
-  )
 
-
-ggplot(newdata, aes(x = agep, y = prob, color = hincp_label, fill = hincp_label)) +
-  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.15, color = NA) +
-  geom_line() +
-  labs(
-    title = "Predicted Probability of Full Internet Access",
-    subtitle = "By Age and Household Income",
-    x = "Age",
-    y = "Probability of Full Internet Access",
-    color = "Household Income",
-    fill = "Household Income"
-  ) +
-  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
-  scale_color_brewer(palette = "Dark2") +
-  scale_fill_brewer(palette = "Dark2") +
-  theme_minimal(base_size = 16) +
-  theme(
-    legend.position = "top",
-    plot.title = element_text(face = "bold"),
-    axis.title.y = element_text(margin = margin(r = 10)),
-    axis.title.x = element_text(margin = margin(t = 10))
-  )
-```
 
 $$
 \log\left(\frac{P(\text{accessinet\_binary} = 1)}{1 - P(\text{accessinet\_binary} = 1)}\right)
@@ -126,3 +85,8 @@ $$
 \log\left(\frac{P(\text{accessinet\_binary} = 1)}{1 - P(\text{accessinet\_binary} = 1)}\right)
 = 3.04 - 0.0339 \cdot \text{agep} + 0.00000704 \cdot \text{hincp} + 0.000000130 \cdot (\text{agep} \times \text{hincp})
 $$
+
+
+
+
+These equations reflect the mathematical structure of the model. In both equations predictors agep (age) and hincp (household income) are located on the righthand side of the equation. The righthand side reflects the log odds of the outcome variable (accessinet_binary, representing internet access) equaling one, which indicates full internet access. The bottom equation includes the model's estimated coefficients, showing how the model would compute the log-odds of any person having full internet access based on age and household income. 

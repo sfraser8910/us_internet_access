@@ -10,10 +10,12 @@ website:
         text: Home
       - href: model.qmd
         text: Model
-      - href: about.qmd
-        text: About
+      - href: plots.qmd
+        text: Plots
       - href: sources.qmd
         text: Sources
+      - href: about.qmd
+        text: About
 
 format:
   html:

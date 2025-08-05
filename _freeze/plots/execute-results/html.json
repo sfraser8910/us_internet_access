@@ -1,0 +1,17 @@
+{
+  "hash": "1b41d8df9d193326dd1c169caae9882f",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"\"\nformat: html\nexecute: \n  echo: false\n---\n\n\n::: {.cell}\n\n:::\n\n\nThese plots highlight the individual impacts of age and household income on Americans' access to internet: people with full access to internet are typically younger and wealthier than those without it. \n\n\n\n\n\n\n\n::: {.cell}\n\n:::\n\n\n\n::: {.cell}\n::: {.cell-output-display}\n![](plots_files/figure-html/unnamed-chunk-3-1.png){width=672}\n:::\n:::\n\n\n\n\n\n\n\n::: {.cell}\n::: {.cell-output-display}\n![](plots_files/figure-html/unnamed-chunk-4-1.png){width=672}\n:::\n:::\n\n",
+    "supporting": [
+      "plots_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
