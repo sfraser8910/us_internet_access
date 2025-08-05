@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Internet Access</title>
+<title>plots – Internet Access</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -90,7 +90,7 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="./index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
@@ -98,7 +98,7 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Model</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./plots.html"> 
+    <a class="nav-link active" href="./plots.html" aria-current="page"> 
 <span class="menu-text">Plots</span></a>
   </li>  
   <li class="nav-item">
@@ -129,16 +129,25 @@ ul.task-list li input[type="checkbox"] {
 
 
 
+<p>These plots highlight the individual impacts of age and household income on Americans’ access to internet: people with full access to internet are typically younger and wealthier than those without it.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="plots_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>Over the past several years access to the internet has become much more universal across America; however, some families still do not have steady access to the internet. Using data from the 2021 5-year American Community Survey, I seek to determine the impact of household income and age on Americans’ access to the internet. I modeled internet access (a binary variable) using logistic regression. While increases in income were associated with increased log-odds of internet access, increases in age were associated with decreased log-odds of internet access. Holding income constant, for every one year increase in age, the log-odds of full internet access decreases by roughly 3%, and the effect of income on internet access increases with age.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="plots_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 
 
 
