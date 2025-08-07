@@ -25,7 +25,7 @@
     "href": "plots.html",
     "title": "Internet Access",
     "section": "",
-    "text": "Attaching package: 'plotly'\n\n\nThe following object is masked from 'package:ggplot2':\n\n    last_plot\n\n\nThe following object is masked from 'package:stats':\n\n    filter\n\n\nThe following object is masked from 'package:graphics':\n\n    layout\n\n\nThese plots highlight the individual impacts of age and household income on Americans’ access to internet: people with full access to internet are typically younger and wealthier than those without it."
+    "text": "These plots highlight the individual impacts of age and household income on Americans’ access to internet: people with full access to internet are typically younger and wealthier than those without it."
   },
   {
     "objectID": "sources.html",
