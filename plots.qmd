@@ -48,7 +48,7 @@ medians <- x |>
   group_by(accessinet_binary) |>
   summarise(median_age = median(agep, na.rm = TRUE)) |>
   ungroup()
-x|> ggplot(aes(y=agep, x=accessinet_binary))+geom_boxplot()+labs(title="Internet Access in US According to Age", subtitle="The median age of Americans with limited or no internet\naccess was significantly higher than that of Americans\nwith full internet access.", x="Type of Internet Access", y="Age") + scale_y_continuous(breaks = seq(0, max(x$agep, na.rm = TRUE), by = 20))+scale_x_discrete(labels = c("No/Limited Access", "Full Access"))+theme_minimal(base_size = 16) + theme(legend.position = "top", plot.title = element_text(face = "bold"), axis.title.y = element_text(margin = margin(r = 10)), axis.title.x = element_text(margin = margin(t = 10))) -> p1
+x|> ggplot(aes(y=agep, x=accessinet_binary))+geom_boxplot()+labs(title="Internet Access in the US According to Age", subtitle="The median age of Americans with limited or no internet\naccess was significantly higher than that of Americans\nwith full internet access.", x="Type of Internet Access", y="Age") + scale_y_continuous(breaks = seq(0, max(x$agep, na.rm = TRUE), by = 20))+scale_x_discrete(labels = c("No/Limited Access", "Full Access"))+theme_minimal(base_size = 16) + theme(legend.position = "top", plot.title = element_text(face = "bold"), axis.title.y = element_text(margin = margin(r = 10)), axis.title.x = element_text(margin = margin(t = 10))) -> p1
 
 ggplotly(p1, tooltip = "label")
 ```
