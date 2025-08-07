@@ -89,4 +89,4 @@ $$
 
 
 
-These equations reflect the mathematical structure of the model. In both equations predictors agep (age) and hincp (household income) are located on the righthand side of the equation. The righthand side reflects the log odds of the outcome variable (accessinet_binary, representing internet access) equaling one, which indicates full internet access. The bottom equation includes the model's estimated coefficients, showing how the model would compute the log-odds of any person having full internet access based on age and household income. 
+These equations reflect the mathematical structure of the model. In both equations predictors agep (age) and hincp (household income) are located on the right hand side of the equation. The right hand side reflects the log odds of the outcome variable (accessinet_binary, representing internet access) equaling one, which indicates full internet access. The bottom equation includes the model's estimated coefficients, showing how the model would compute the log-odds of any person having full internet access based on age and household income. 
