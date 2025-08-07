@@ -71,7 +71,7 @@ model_tidy |>
 
 
 
-This table highlights key results from the model. It is important to note that the Intercept value should be disregarded as this indicates the log odds of  someone for whom both the predictors (age and household income) equal zero having full internet access. Considering that none of the confidence intervals include 0, these predictions appear reasonable. Most notably these estimates indicate that an increase one year in age decreases the log-odds of full internet access by roughly 3% and a one dollar increase in household income leads to a small increase in the log odds of full internet access.  
+This table highlights key results from the model. It is important to note that the Intercept value should be disregarded as this indicates the log-odds of  someone for whom both the predictors (age and household income) equal zero having full internet access. Considering that none of the confidence intervals include 0, these predictions appear reasonable. Most notably these estimates indicate that an increase by one year in age decreases the odds of having full internet access by roughly 3% and a one dollar increase in household income leads to a small increase in the odds of full internet access, which becomes more impactful with greater increases in income.  
 
 
 
